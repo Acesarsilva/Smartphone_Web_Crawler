@@ -11,7 +11,7 @@ def main():
     stopwords_br = nltk.corpus.stopwords.words('portuguese')
     stopwords_en = nltk.corpus.stopwords.words('english')
     start_links = pd.read_csv('start_links.csv')['links'].tolist()
-    downloaded_url = []
+    downloaded_url = set()
     border = [(x,0) for x in start_links]
     model = pickle.load(open('random_forest.pk', 'rb'))
     vocabulary = pickle.load(open('vocabulary.pk','rb'))
@@ -33,12 +33,13 @@ def main():
                 count += pred[0]
                 if(pred[0] == 1):
                     writer.writerow([url])
-                downloaded_url.append(url)
+                    print('found')
+                downloaded_url.add(url)
                 #time.sleep(1)
                 print(n_links)
             except:
                 print('Bad Download:', url)
-                #border.append((url,0))
+                border.append((url,0))
             
             n_links -= 1
     

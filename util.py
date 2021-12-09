@@ -11,14 +11,15 @@ def get_links(html,url):
     links = []
     soup = BeautifulSoup(html,'lxml')
     for link in soup.find_all('a'):
+        anc = link.text
         link = link.get('href')
         if(link and link != url and link[0:5] == 'https'):
-            links.append((link, ranker(link)))
+            links.append((link, ranker(anc),anc))
     
     return links
 
 def ranker(url):
-    domain_words = {"smartphone","celular", "samsung", "apple","motorola","xiaomi", "android", "ios", "galaxy", "moto", "lenovo", "tela", "zenfone", "lg", "telefone","asus","camera","core","mobile","phone","cell", "bateria", "memory", "pixel"}
+    domain_words = {"smartphone","celular", "samsung", "apple","motorola","xiaomi", "ios", "galaxy", "moto", "lenovo", "tela", "zenfone", "lg", "telefone","asus","camera","core","mobile","phone","cell", "bateria", "memory", "pixel"}
     counter = 0
     for word in domain_words:
         if url.lower().find(word) != -1:

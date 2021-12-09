@@ -1,3 +1,9 @@
 busca,total_links,good_links
 heu, 1000, 485
-larg, 1000, 
+larg, 1000, 29
+heu, 100, 80
+larg, 100, 2
+heu, 250,219
+larg, 250,4
+heu, 500,
+larg, 500, 
