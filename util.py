@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from sklearn.feature_extraction.text import CountVectorizer
 import pandas as pd
 import unicodedata
+import math
 
 def download_url(url):
     return urlopen(url,timeout=3).read().decode('utf-8')
@@ -41,6 +42,17 @@ def pre_processor_model_page(txt,vocabulary,stopwords_en,stopwords_br):
 
     df_bow = pd.DataFrame(data.toarray(),columns=text_bow.get_feature_names())
     return df_bow
+
+def cossine_similarity(query,document):
+    xx, xy, yy = 0,0,0
+    for d in range(len(query)):
+        x = query[d]
+        y = document[d]
+        xx += x*x
+        xy += x*y
+        yy += y*y
+
+    return (xy/math.sqrt(xx*yy))
 
 def spearman(rank1, rank2):
     n = len(rank1)

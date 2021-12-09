@@ -1,4 +1,4 @@
-from util import spearman, kendal_tau
+from util import spearman, kendal_tau, cossine_similarity
 
 
 def main():
@@ -15,14 +15,14 @@ def main():
                 words = [(word + '.' + camp).lower() for word in words]
             
             word_query.extend(words)
-            end_query = input("Deseja adicionar mais algo a esta consulta? [Y/n]")
+            end_query = input("Deseja adicionar mais algo a esta consulta? [Y/n]: ")
             if(end_query == "n"):
                 on_query = False
         
         print("Realizando consulta.....")
         rank = query(word_query)
         print("Resultado encontrado: ", rank)
-        end_run = input("Deseja fazer mais uma consulta? [Y/n]")
+        end_run = input("Deseja fazer mais uma consulta? [Y/n]: ")
         if(end_run == "n"):
             run = False
 
