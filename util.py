@@ -41,3 +41,30 @@ def pre_processor_model_page(txt,vocabulary,stopwords_en,stopwords_br):
 
     df_bow = pd.DataFrame(data.toarray(),columns=text_bow.get_feature_names())
     return df_bow
+
+def spearman(rank1, rank2):
+    n = len(rank1)
+    rank1_pos = [-1]*n
+    rank2_pos = [-1]*n
+    for x in range(n):
+        rank1_pos[rank1[x]-1] = x
+        rank2_pos[rank2[x]-1] = x
+    
+    sum_of_square_dist = 0
+    for x in range(n):
+        sum_of_square_dist += (rank1_pos[x] - rank2_pos[x])**2
+    
+    spearman = 1 - ((6*sum_of_square_dist)/(n*((n**2) - 1)))
+    
+    return spearman
+
+def kendal_tau(rank1, rank2):
+    n = len(rank1)
+    rank1_pair_set = set((rank1[x],rank1[y]) for x in range(n) for y in range(x+1,n))
+    rank2_pair_set = set((rank2[x],rank2[y]) for x in range(n) for y in range(x+1,n))
+    
+    n_pair = len(rank1_pair_set)
+    convergence = len(rank1_pair_set.intersection(rank2_pair_set))
+    divergence = n_pair - convergence
+
+    return ((convergence/n_pair) - (divergence/n_pair))
