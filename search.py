@@ -7,7 +7,7 @@ def main():
         on_query = True
         word_query = []
         while(on_query):
-            print("Campos: [geral, memoria, tela, ram, preço, marca]")
+            print("Campos: [geral, memoria_rom, tela, memoria_ram, preço, marca, camera]")
             camp = input("Campo que deseja consultar: ")
             value = input("Valor que deseja neste campo: ")
             words = value.split()
