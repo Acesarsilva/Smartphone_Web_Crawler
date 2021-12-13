@@ -25,8 +25,11 @@ def main(data_path):
                 on_query = False
         
         print("Realizando consulta.....")
-        rank = bool_query(word_query, data,84,10)
-        print("Resultado encontrado: ", rank)
+        rank_tfidf = tfid_query(word_query, data,115,20)
+        rank_bool = bool_query(word_query,data,115,20)
+        print("Resultado encontrado TF-IDF: ", rank_tfidf)
+        print("Resultado encontrado Bool: ", rank_bool)
+        print('Kendal Tau: ', kendal_tau(rank_tfidf,rank_bool))
         end_run = input("Deseja fazer mais uma consulta? [Y/n]: ")
         if(end_run == "n"):
             run = False
@@ -45,13 +48,13 @@ def tfid_query(words, data, n_documents, K):
         if(word in data.keys()):
             ni = data[word]['ni']
             docs = data[word]['occurrences']
-            word_tfidf = math.log(1 + (n_documents/ni)) #Calculando TF-IDF para palavra na query
+            word_tfidf = math.log(n_documents/ni) #Calculando TF-IDF para palavra na query
             sumyy += word_tfidf**2
             query[x] = word_tfidf
             for y in range(ni):
                 doc = int(docs[y][0])
                 tf = docs[y][1]
-                tfidf = 1 + math.log(tf) #Calculando TF-IDF para palavra no documento
+                tfidf = tf*math.log(n_documents/ni) #Calculando TF-IDF para palavra no documento
                 tlp = documents[doc-1]
                 documents[doc-1] = (tlp[0]+tfidf**2,tlp[1]+(tfidf*word_tfidf))
     
@@ -71,7 +74,7 @@ def tfid_query(words, data, n_documents, K):
         else:
             scores.append(score)
             rank.append(x+1)
-
+    
     return rank[:K]
 
 def bool_query(words, data,n_documents, K):
@@ -91,7 +94,7 @@ def bool_query(words, data,n_documents, K):
             for y in range(ni):
                 doc = int(docs[y][0])
                 tf = docs[y][1]
-                tfidf = 1 #Calculando TF-IDF para palavra no documento
+                tfidf = tf #Calculando TF-IDF para palavra no documento
                 tlp = documents[doc-1]
                 documents[doc-1] = (tlp[0]+tfidf**2,tlp[1]+(tfidf*word_tfidf))
     
@@ -111,11 +114,11 @@ def bool_query(words, data,n_documents, K):
         else:
             scores.append(score)
             rank.append(x+1)
-
+    
     return rank[:K]
 
 
 if __name__ == "__main__":
     #data_path = sys.argv[1]
-    data_path = 'json_general_final.json'
+    data_path = 'indices/frequencia_discretizada_geral_normalizada.json'
     print(main(data_path))
