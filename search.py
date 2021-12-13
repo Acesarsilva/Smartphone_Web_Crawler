@@ -12,7 +12,7 @@ def main(data_path):
         on_query = True
         word_query = []
         while(on_query):
-            print("Campos: [geral, memoria_rom, tela, memoria_ram, preço, marca, camera]")
+            print("Campos: [geral, rom, tela, ram, precro, marca, camera]")
             camp = input("Campo que deseja consultar: ")
             value = input("Valor que deseja neste campo: ")
             words = value.split()
@@ -63,7 +63,7 @@ def tfid_query(words, data, n_documents, K):
     for x in range(n_documents):
         score = 0
         if(documents[x][0] != 0):
-            score = (documents[x][1]/(documents[x][0]*sumyy)) #Calculando similaridade por Cosseno
+            score = (documents[x][1]/math.sqrt(documents[x][0]*sumyy)) #Calculando similaridade por Cosseno
 
         if(score):
             for n in range(len(scores)):
@@ -94,7 +94,7 @@ def bool_query(words, data,n_documents, K):
             for y in range(ni):
                 doc = int(docs[y][0])
                 tf = docs[y][1]
-                tfidf = tf #Calculando TF-IDF para palavra no documento
+                tfidf = 1 #Calculando TF-IDF para palavra no documento
                 tlp = documents[doc-1]
                 documents[doc-1] = (tlp[0]+tfidf**2,tlp[1]+(tfidf*word_tfidf))
     
@@ -120,5 +120,5 @@ def bool_query(words, data,n_documents, K):
 
 if __name__ == "__main__":
     #data_path = sys.argv[1]
-    data_path = 'indices/frequencia_discretizada_geral_normalizada.json'
+    data_path = 'indices/frequence_field.json'
     print(main(data_path))
